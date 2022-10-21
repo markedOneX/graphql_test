@@ -35,11 +35,11 @@ function App() {
     receivedData.map(async (e) => {
       const gasPrice = await provider.getGasPrice(e.components[0]); //Getting gas price
       const gasPriceFormatter = utils.formatUnits(gasPrice, "gwei"); //Using ether.js format utility to display gas price properly
-      console.log(gasPriceFormatter);
+      console.log("gasprice: ", gasPriceFormatter);
 
       const balance = await provider.getBalance(e.components[0]); //Getting balance of the contract
       const showBalance = ethers.utils.formatEther(balance);
-      console.log("balance", showBalance);
+      console.log("balance: ", showBalance);
 
       //GetAvatar would always return null. So used custom Image as a thumbnail.
     });
@@ -101,6 +101,18 @@ function App() {
           ))} */}
         </tbody>
       </table>
+      <p>
+        Check the console in order to check the data that is coming from
+        ether.js. (Gas Price and Balance).
+        <br /> getAvatar() function would return null so, applied custom image
+        as a thumbnail.
+        <br />
+        Couldn't find any assets under the component's address, thus they are
+        not mentioned here.
+        <br />
+        You may increase the first:count in query in code, in order to fetch
+        more records.
+      </p>
     </div>
   );
 }
