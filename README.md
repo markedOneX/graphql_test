@@ -1,5 +1,7 @@
 # graphql_test
 
+Instructions
+
 1. Download the zip file of the code.
 2. Run the code folder in VSCode
 3. The packages were installed with Yarn. So make sure you have Yarn installed on Your PC.
