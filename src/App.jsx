@@ -7,11 +7,11 @@ import { ethers, utils } from "ethers";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [FirstData, setFirstData] = useState([]);
-  const [MktFilter, setMktFilter] = useState(null);
-  // const [stateBalance, stateSetBalance] = useState([]);
-  const randomMarketPrice = 357;
-  const provider = new ethers.providers.EtherscanProvider();
+  const [FirstData, setFirstData] = useState([]); //Fetches first api (Graphql)
+  // const [MktFilter, setMktFilter] = useState(null); //Used to filter marketcap
+
+  const randomMarketPrice = 357; //Random price since 2nd API wasnt available
+  const provider = new ethers.providers.EtherscanProvider(); //Provider fetched from ether.js
 
   useEffect(() => {
     request();
@@ -30,16 +30,20 @@ function App() {
     );
     const res = await fetching.json();
     const receivedData = res.data.sets;
-    setFirstData(receivedData);
+    setFirstData(receivedData); //Setting the data in to stateArray to use it globally
+    //Mapping through the received data -> components-> Id[0] and sending it to ether.js
     receivedData.map(async (e) => {
-      const gasPrice = await provider.getGasPrice(e.components[0]);
-      const gasPriceFormatter = utils.formatUnits(gasPrice, "gwei");
-      console.log("gasPrice", gasPriceFormatter);
-      const balance = await provider.getBalance(e.components[0]);
+      const gasPrice = await provider.getGasPrice(e.components[0]); //Getting gas price
+      const gasPriceFormatter = utils.formatUnits(gasPrice, "gwei"); //Using ether.js format utility to display gas price properly
+      console.log(gasPriceFormatter);
+
+      const balance = await provider.getBalance(e.components[0]); //Getting balance of the contract
       const showBalance = ethers.utils.formatEther(balance);
       console.log("balance", showBalance);
-    });
 
+      //GetAvatar would always return null. So used custom Image as a thumbnail.
+    });
+    //2nd API Code
     // receivedData.map(async (e) => {
     //   try {
     //     const res2req = await fetch(
@@ -50,6 +54,7 @@ function App() {
     //     console.log("Not available" + err);
     //   }
     // });
+    return;
   };
 
   return (
@@ -72,9 +77,7 @@ function App() {
 
                 <span>{e.name}</span>
               </td>
-              <td className=" text-center">
-                {[e.units[0] * randomMarketPrice]}
-              </td>
+              <td className=" text-center">{e.units[0] * randomMarketPrice}</td>
               <td className=" text-center"> {randomMarketPrice}</td>
             </tr>
           ))}
